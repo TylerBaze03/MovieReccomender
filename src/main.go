@@ -1,18 +1,28 @@
 package main
 
+import (
+	//"fmt"
+	//"net/http"
+	//"io"
+	"MovieReccomendation/queries"
+	"fmt"
+)
+
 // test file for making sure all these functions work
+//todo: testinbg of json and reading and writing
+// adding rest of functions and files.
 
 func main(){
 	// slice of genres interested in as first query, is a string if any is selected
-	genres := GenreMovies()
+	genres := queries.GenreMovies()
 	// fucntion to find movies based off of director, returned 0 if no specfic actor or director or producer, etc is selected
-	person := PersonSpec()
+	//person := PersonSpec()
 	//query for new(past 10 years), older(30 years), or very old (50+), string
-	newOld := MovieDate()
+	//newOld := MovieDate()
 
 	// generate slice of movies from database, 5 of the top movies from the time and 5 not as well known(revenue)
-	movieRecSlice := Movies()
-
+	//movieRecSlice := Movies()
+	fmt.Println((string(genres)))
 
 
 }
