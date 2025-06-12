@@ -9,8 +9,7 @@ import (
 )
 
 // test file for making sure all these functions work
-//todo: testinbg of json and reading and writing
-// adding rest of functions and files.
+//todo: finish testing genres
 
 func main(){
 	// slice of genres interested in as first query, is a string if any is selected
@@ -22,7 +21,7 @@ func main(){
 
 	// generate slice of movies from database, 5 of the top movies from the time and 5 not as well known(revenue)
 	//movieRecSlice := Movies()
-	fmt.Println((string(genres)))
+	fmt.Println((genres))
 
 
 }

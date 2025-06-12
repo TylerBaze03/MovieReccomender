@@ -1,37 +1,73 @@
 package queries
 
 import (
-	//"buffio"
-	//"fmt"
+	"bufio"
+	"fmt"
 	"io"
 	"net/http"
 	"MovieReccomendation/key"
 	"MovieReccomendation/data"
-	//"strings"
+	"strings"
+	"os"
 )
 
 // genres
-//todo: test for loop for getting genres or no genres, 
+//todo: adding genres by number to array not working 
+// panic: runtime error: index out of range [1] with length 1
 
-func GenreMovies() []byte{
+/* goroutine 1 [running]:
+MovieReccomendation/queries.GenreMovies()
+        C:/Users/Horizon/Documents/Github/MovieReccomend/src/queries/genre.go:50 +0x4c6
+main.main()
+        C:/Users/Horizon/Documents/Github/MovieReccomend/src/main.go:17 +0x13
+exit status 2 */
+
+func GenreMovies() []int{
 	
 	//anyGenre := "ANY"
 	updatesGenres := getGenres()
 	//fmt.Println(string(updatesGenres))
-	jsonHelper.AddToJson(updatesGenres)
-	/*
-	chosen := false
-	userGenres = new([]string)
+	genreList := jsonHelper.AddToJson(updatesGenres)
 	
-	for (chosen){
+	//chosen := true
+	var input string 
+	
+	//for (chosen){
+		reader := bufio.NewReader(os.Stdin)
 		fmt.Println("Do you want to watch any genre specific movies(If any type any)?")
 		input, _ = reader.ReadString('\n')
 		input = strings.TrimSpace(input)
-		input = strings.ToUpper(input)
-		chosen = strings.Split(input, " ")
+		//input = string.ToUpper(input)
+		
+		/*
+		if input == anyGenre || input == ""{
+			chosen = false
+		}
+		*/
+	//}
+	userGenres := strings.Split(input, " ")
+	for i:=0; i < len(userGenres); i ++{
+		userGenres[i] = capitalizeFirstLetter(input)
 	}
-	*/
-	return updatesGenres
+	userGenres = checkSciFiTV(userGenres)
+
+	fmt.Println(userGenres)
+	var genreNums []int
+	count := 0
+	for i := 0; i < len(genreList); i ++{
+		if genreList[i].NameG == userGenres[count]{
+			genreNums = append(genreNums, genreList[i].Id)
+			count++
+		}
+	}
+	
+	return genreNums
+}
+func capitalizeFirstLetter(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+	return strings.ToUpper(string(s[0])) + s[1:]
 }
 
 func getGenres() []byte{
@@ -50,3 +86,27 @@ func getGenres() []byte{
 	//fmt.Println(string(body))
 	return body
 }
+
+// Science Fiction and TV Movie should be the only 2 word genres so need to check for it
+func checkSciFiTV(g []string) []string{
+	var ret []string = g
+	
+	for i := 0; i < len(g); i ++{
+		if g[i] == "Science"{
+			ret[i] = "Science Fiction"
+			ret = remove(ret, i+1)
+		}
+		if g[i] == "Tv"{
+			ret[i] = "TV Movie"
+			ret = remove(ret, i+1)
+		}
+	}
+
+
+	return ret
+}
+func remove(s []string, i int)[]string{
+	s[i] = s[len(s)-1]
+    return s[:len(s)-1]
+}
+

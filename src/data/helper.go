@@ -6,27 +6,28 @@ import (
 	"os"
 )
 
-// Todo: exporting json out of the file cannot put it into the struct find fix, possibly with marshalling
+// Todo: 
 
 type genre struct{
 	Id int `json:"id"`
-	NameG string `json:"name`
+	NameG string `json:"name"`
 }
 type genreTag struct{
 	G []genre `json:"genres"`
 }
 
-func AddToJson (body []byte){
+func AddToJson (body []byte)[]genre{
 	file, err := os.Open("data/genres.json")
+	var empty []genre 
 	if err!= nil{
 		fmt.Println("Error writing to file: ", err)
-		return
+		return empty
 	}
 	defer file.Close()
 	jsonData:= body
 	if err!= nil{
 		fmt.Println("Error writing to file: ", err)
-		return
+		return empty
 	}
 
 	if err:= os.WriteFile("data/genres.json", jsonData, 0644);err!= nil{
@@ -42,14 +43,13 @@ func AddToJson (body []byte){
 	}
 	
 
-	fmt.Println(Genres.G)
 
 
 	for _, values := range(Genres.G){
-		fmt.Printf("ID: %d, Name:%s", values.Id, values.NameG)
+		fmt.Printf("ID: %d, Name:%s ", values.Id, values.NameG)
 	}
 
-
+	return Genres.G
 
 
 }
