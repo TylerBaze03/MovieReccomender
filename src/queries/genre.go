@@ -33,10 +33,10 @@ func GenreMovies() []int{
 	var input string 
 	
 	//for (chosen){
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Println("Do you want to watch any genre specific movies(If any type any)?")
-		input, _ = reader.ReadString('\n')
-		input = strings.TrimSpace(input)
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("Do you want to watch any genre specific movies(If any type any)?")
+	input, _ = reader.ReadString('\n')
+	input = strings.TrimSpace(input)
 		//input = string.ToUpper(input)
 		
 		/*
@@ -47,7 +47,7 @@ func GenreMovies() []int{
 	//}
 	userGenres := strings.Split(input, " ")
 	for i:=0; i < len(userGenres); i ++{
-		userGenres[i] = capitalizeFirstLetter(input)
+		userGenres[i] = capitalizeFirstLetter(userGenres[i])
 	}
 	userGenres = checkSciFiTV(userGenres)
 
@@ -55,9 +55,18 @@ func GenreMovies() []int{
 	var genreNums []int
 	count := 0
 	for i := 0; i < len(genreList); i ++{
-		if genreList[i].NameG == userGenres[count]{
-			genreNums = append(genreNums, genreList[i].Id)
-			count++
+		for j :=0; j<=len(userGenres); j++{
+			if genreList[i].NameG == userGenres[j]{
+				//fmt.Println()
+				genreNums = append(genreNums, genreList[i].Id)
+				count++
+			}
+		}
+		
+		if len(userGenres) == len(genreNums){
+			fmt.Println("Broken")
+			break
+			
 		}
 	}
 	
@@ -93,12 +102,16 @@ func checkSciFiTV(g []string) []string{
 	
 	for i := 0; i < len(g); i ++{
 		if g[i] == "Science"{
-			ret[i] = "Science Fiction"
-			ret = remove(ret, i+1)
+			//ret[i] = "Science Fiction"
+			ret = append(ret[:i], ret[i+2:]...)
+			ret = append(ret, "Science Fiction")
+			//ret = remove(ret, i+1)
 		}
 		if g[i] == "Tv"{
-			ret[i] = "TV Movie"
-			ret = remove(ret, i+1)
+			//ret[i] = "TV Movie"
+			ret = append(ret[:i], ret[i+2:]...)
+			ret = append(ret, "TV Movie")
+			//ret = remove(ret, i+1)
 		}
 	}
 
